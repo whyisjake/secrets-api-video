@@ -1,0 +1,37 @@
+{
+	"voice": {
+		"note": "ElevenLabs voice (same as the agentic-deployments video, via ELEVENLABS_VOICE_ID). 'caption' is optional on-screen/SRT text when it should differ from the spoken text.",
+		"modelId": "eleven_multilingual_v2"
+	},
+	"scenes": [
+		{
+			"id": "hook",
+			"text": "You connect your site to an AI service. You paste in an API key. That key unlocks your account, and your bill. So where does WordPress keep it? Usually in the database, as plain text."
+		},
+		{
+			"id": "plaintext",
+			"text": "Which means anyone who gets a copy of your database, or a backup, can read it. That's a house key under the doormat."
+		},
+		{
+			"id": "api",
+			"text": "So WordPress is getting a better hiding spot. Credentials are encrypted before they're saved. For developers, it's a couple of function calls."
+		},
+		{
+			"id": "encrypted",
+			"text": "Now the database holds scrambled text. The key that unlocks it lives in your site's config file, not the database. And WordPress keeps the previous version, so you can swap in a fresh credential without a scramble."
+		},
+		{
+			"id": "health",
+			"text": "Site Health checks the setup, and tells you if it could be stronger."
+		},
+		{
+			"id": "hosts",
+			"text": "Hosting companies can go further, and plug in their own vault, with services like HashiCorp Vault or AWS Secrets Manager. If that setup ever breaks, WordPress shows an error. It never quietly falls back to the weaker option."
+		},
+		{
+			"id": "close",
+			"text": "It's landing in WordPress 7.2, a step toward a more secure WordPress. Connectors, where you add your AI keys, is next in line. Learn more at secrets API dot dev.",
+			"caption": "It's landing in WordPress 7.2, one more step toward a more secure WordPress. Connectors, where you add your AI keys, is next in line. Learn more at secretsapi.dev."
+		}
+	]
+}

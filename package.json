@@ -1,0 +1,22 @@
+{
+  "name": "secrets-api-video",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "studio": "remotion studio src/index.ts",
+    "narrate": "node script/narrate.mjs",
+    "render": "node script/captions.mjs && remotion render src/index.ts SecretsApi out/secrets-api.mp4",
+    "captions": "node script/captions.mjs"
+  },
+  "dependencies": {
+    "@remotion/cli": "^4.0.535",
+    "@remotion/google-fonts": "^4.0.535",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "remotion": "^4.0.535"
+  },
+  "devDependencies": {
+    "@types/react": "^19.3.0",
+    "typescript": "^7.0.2"
+  }
+}
