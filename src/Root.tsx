@@ -1,6 +1,7 @@
 import React from 'react';
-import { Composition, staticFile } from 'remotion';
+import { Composition, Still, staticFile } from 'remotion';
 
+import { Thumbnail } from './Thumbnail';
 import { framesFor, type Manifest, SecretsApi } from './Video';
 
 const FPS = 30;
@@ -27,5 +28,6 @@ export const RemotionRoot: React.FC = () => (
 	<>
 		{ cut( 'SecretsApiLinkedin', 'linkedin' ) }
 		{ cut( 'SecretsApiDev', 'dev' ) }
+		<Still id="Thumbnail" component={ Thumbnail } width={ 1920 } height={ 1080 } />
 	</>
 );
