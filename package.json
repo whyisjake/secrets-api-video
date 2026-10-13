@@ -4,9 +4,10 @@
   "type": "module",
   "scripts": {
     "studio": "remotion studio src/index.ts",
-    "narrate": "node script/narrate.mjs",
-    "render": "node script/captions.mjs && remotion render src/index.ts SecretsApi out/secrets-api.mp4",
-    "captions": "node script/captions.mjs"
+    "narrate:linkedin": "node script/narrate.mjs --cut=linkedin",
+    "narrate:dev": "node script/narrate.mjs --cut=dev",
+    "render:linkedin": "node script/render.mjs linkedin",
+    "render:dev": "node script/render.mjs dev"
   },
   "dependencies": {
     "@remotion/cli": "^4.0.535",

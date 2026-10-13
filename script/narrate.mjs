@@ -9,7 +9,13 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = join( dirname( fileURLToPath( import.meta.url ) ), '..' );
-const outDir = join( root, 'public', 'audio' );
+// `node script/narrate.mjs --cut=<name> [scene-id ...]`: each cut keeps its own
+// narration script and its own clips, so re-narrating one never touches another.
+const cut = ( process.argv.find( a => a.startsWith( '--cut=' ) ) || '' ).slice( 6 );
+if ( ! cut ) {
+	throw new Error( 'Pass --cut=linkedin or --cut=dev.' );
+}
+const outDir = join( root, 'public', 'audio', cut );
 
 function loadEnv() {
 	const envPath = process.env.ENV_FILE || join( root, '.env' );
@@ -56,7 +62,7 @@ function scratch( text, file ) {
 
 loadEnv();
 
-const { voice, scenes } = JSON.parse( readFileSync( join( root, 'script', 'narration.json' ), 'utf8' ) );
+const { voice, scenes } = JSON.parse( readFileSync( join( root, 'script', `narration.${ cut }.json` ), 'utf8' ) );
 const apiKey = process.env.ELEVENLABS_API_KEY;
 const voiceId = process.env.ELEVENLABS_VOICE_ID;
 const source = apiKey ? 'elevenlabs' : 'scratch';
@@ -66,7 +72,7 @@ if ( apiKey && ! voiceId ) {
 }
 
 // `npm run narrate -- <scene-id> ...` regenerates only those clips and keeps the rest.
-const only = process.argv.slice( 2 );
+const only = process.argv.slice( 2 ).filter( a => ! a.startsWith( '--' ) );
 const manifestPath = join( outDir, 'manifest.json' );
 const previous = only.length && existsSync( manifestPath ) ? JSON.parse( readFileSync( manifestPath, 'utf8' ) ) : null;
 
@@ -100,7 +106,7 @@ for ( const scene of scenes ) {
 	}
 
 	const seconds = durationSeconds( path );
-	manifest.scenes.push( { id: scene.id, file: `audio/${ file }`, seconds } );
+	manifest.scenes.push( { id: scene.id, file: `audio/${ cut }/${ file }`, seconds } );
 	console.log( `${ scene.id.padEnd( 16 ) } ${ seconds.toFixed( 1 ) }s` );
 }
 

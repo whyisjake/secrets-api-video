@@ -264,3 +264,81 @@ export const Code: React.FC< { lines: Token[][]; size?: number; reveal?: number[
 };
 
 export { syntax };
+
+const KEYWORDS = /^(if|elseif|else|function|class|implements|return|instanceof|new|throw|null|true|false|echo|array)$/;
+
+/** Tiny PHP-ish tokenizer: comments, strings, variables, keywords, calls, class names. */
+export function phpTokens( line: string ): [ string, string ][] {
+	const re = /(\/\/.*$|\/\*.*?\*\/)|('(?:[^'\\]|\\.)*'|"(?:[^"\\]|\\.)*")|(\$\w+)|(\bWP_\w+(?:::\w+)?|\bLogicException\b)|(\b[A-Za-z_]\w*)(?=\s*\()|(\b[A-Za-z_]\w*\b)|(\s+|.)/g;
+	const out: [ string, string ][] = [];
+	for ( const m of line.matchAll( re ) ) {
+		if ( m[ 1 ] ) out.push( [ m[ 1 ], syntax.comment ] );
+		else if ( m[ 2 ] ) out.push( [ m[ 2 ], syntax.str ] );
+		else if ( m[ 3 ] ) out.push( [ m[ 3 ], syntax.var ] );
+		else if ( m[ 4 ] ) out.push( [ m[ 4 ], syntax.fn ] );
+		else if ( m[ 5 ] ) out.push( [ m[ 5 ], KEYWORDS.test( m[ 5 ] ) ? syntax.kw : syntax.fn ] );
+		else if ( m[ 6 ] ) out.push( [ m[ 6 ], KEYWORDS.test( m[ 6 ] ) ? syntax.kw : syntax.var ] );
+		else out.push( [ m[ 7 ], syntax.punct ] );
+	}
+	return out;
+}
+
+/**
+ * Syntax-highlighted code with lines that reveal in order and a moving focus:
+ * `focus` steps (scene ms -> lines) dim everything else.
+ */
+export const CodeBlock: React.FC< {
+	lines: string[];
+	size?: number;
+	width?: number;
+	file?: string;
+	revealAt?: number;
+	focus?: { at: number; lines: number[] }[];
+} > = ( { lines, size = 32, width = 1150, file, revealAt = 300, focus } ) => {
+	const frame = useCurrentFrame();
+	const { fps } = useVideoConfig();
+	const t = ( frame / fps ) * 1000;
+	const active = focus ? [ ...focus ].reverse().find( f => t >= f.at ) : undefined;
+	return (
+		<div style={ { width, background: color.white, border: `1px solid ${ color.grey300 }`, borderRadius: 14, overflow: 'hidden', boxShadow: '0 24px 70px rgba(30,30,30,0.10)', fontFamily: font.mono } }>
+			{ file && (
+				<div style={ { padding: '10px 28px', background: color.paper, borderBottom: `1px solid ${ color.grey300 }`, fontSize: 20, color: color.grey700 } }>{ file }</div>
+			) }
+			<div style={ { padding: '26px 0' } }>
+				{ lines.map( ( line, i ) => {
+					const start = revealAt + i * 90;
+					const p = interpolate( t, [ start, start + 350 ], [ 0, 1 ], { easing: ease.enter, extrapolateLeft: 'clamp', extrapolateRight: 'clamp' } );
+					const on = ! active || active.lines.includes( i );
+					return (
+						<div
+							key={ i }
+							style={ {
+								whiteSpace: 'pre',
+								fontSize: size,
+								lineHeight: 1.55,
+								minHeight: size * 1.55,
+								padding: '0 36px',
+								borderLeft: `6px solid ${ active && on ? color.blueberry : 'transparent' }`,
+								background: active && on ? color.blueberryTint : 'transparent',
+								opacity: p * ( on ? 1 : 0.32 ),
+								transform: `translateY(${ ( 1 - p ) * 8 }px)`,
+							} }
+						>
+							{ phpTokens( line ).map( ( [ text, c ], j ) => (
+								<span key={ j } style={ { color: c } }>{ text }</span>
+							) ) }
+						</div>
+					);
+				} ) }
+			</div>
+		</div>
+	);
+};
+
+/** Small explanatory card for the right-hand column. */
+export const Note: React.FC< { title: string; children?: React.ReactNode; accent?: string } > = ( { title, children, accent = color.blueberry } ) => (
+	<div style={ { borderLeft: `5px solid ${ accent }`, paddingLeft: 22, marginBottom: 26 } }>
+		<div style={ { fontSize: 30, fontWeight: 700, lineHeight: 1.2 } }>{ title }</div>
+		{ children && <div style={ { fontSize: 25, lineHeight: 1.4, color: color.grey700, marginTop: 6 } }>{ children }</div> }
+	</div>
+);

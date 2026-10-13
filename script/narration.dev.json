@@ -1,0 +1,75 @@
+{
+	"voice": {
+		"note": "Developer cut. Same ElevenLabs voice (ELEVENLABS_VOICE_ID). 'text' is spoken (identifiers spelled for pronunciation); 'caption' is the on-screen/SRT text.",
+		"modelId": "eleven_multilingual_v2"
+	},
+	"scenes": [
+		{
+			"id": "intro",
+			"text": "The Secrets API is committed to core in revision 64337, and will ship in WordPress 7.2. Here's how to use it.",
+			"caption": "The Secrets API is committed to core in r64337, and will ship in WordPress 7.2. Here's how to use it."
+		},
+		{
+			"id": "why",
+			"text": "Plugins keep API keys in options. Plain text. So a database dump, or a backup, leaks every one."
+		},
+		{
+			"id": "store",
+			"text": "Store one with W P set secret: a name, and a value. You get back true, or a W P Error. Names look like plugin slug, slash, key name.",
+			"caption": "Store one with wp_set_secret(): a name, and a value. You get back true, or a WP_Error. Names look like plugin-slug/key-name."
+		},
+		{
+			"id": "read",
+			"text": "Reading has three outcomes. A W P Secret. Null, if there's no such secret. Or a W P Error, if it exists but can't be read. Call reveal for the value: a string, or a W P Error.",
+			"caption": "Reading has three outcomes. A WP_Secret. null, if there's no such secret. Or a WP_Error, if it exists but can't be read. Call reveal() for the value: a string, or a WP_Error."
+		},
+		{
+			"id": "hidden",
+			"text": "The value stays hidden. Echo it, log it, or encode it as JSON, and you get a placeholder. Serialize or clone it, and it throws. Only reveal returns the plaintext.",
+			"caption": "The value stays hidden. Echo it, log it, or encode it as JSON, and you get a placeholder. Serialize or clone it, and it throws. Only reveal() returns the plaintext."
+		},
+		{
+			"id": "migrate",
+			"text": "Got a key in an option already? Import it. The option stays untouched, and the secret is flagged for rotation, since it's lived in plain text."
+		},
+		{
+			"id": "rotate",
+			"text": "Set a new value, and the old one becomes the previous version. Read it with W P Secret Version PREVIOUS while you switch over, then retire it.",
+			"caption": "Set a new value, and the old one becomes the previous version. Read it with WP_Secret_Version::PREVIOUS while you switch over, then retire it."
+		},
+		{
+			"id": "hood",
+			"text": "Under the hood: libsodium, XChaCha20 Poly1305. Each value gets its own data key, wrapped by a master key from a root key, which your site key wraps. That site key comes from W P SECRETS KEY, or from the logged in key and salt. It never touches the database.",
+			"caption": "Under the hood: libsodium, XChaCha20-Poly1305. Each value gets its own data key, wrapped by a master key from a root key, which your site key wraps. That site key comes from WP_SECRETS_KEY, or from LOGGED_IN_KEY and LOGGED_IN_SALT. It never touches the database."
+		},
+		{
+			"id": "health",
+			"text": "Site Health checks that setup, and recommends a dedicated key."
+		},
+		{
+			"id": "network",
+			"text": "On multisite, there are network twins. Two capabilities: manage secrets for administrators, manage network secrets for super admins. The functions themselves don't check capabilities. Do that at your own boundary.",
+			"caption": "On multisite, there are network twins. Two capabilities: manage_secrets for administrators, manage_network_secrets for super admins. The functions themselves don't check capabilities. Do that at your own boundary."
+		},
+		{
+			"id": "dropin",
+			"text": "Hosts get a drop-in. A secrets dot P H P in wp-content loads before must-use plugins. Set the provider, store or keyring, and implement the interface. Conformance tests for drop-in authors ship in core.",
+			"caption": "Hosts get a drop-in. A secrets.php in wp-content loads before must-use plugins. Set the provider, store or keyring, and implement the interface. Conformance tests for drop-in authors ship in core."
+		},
+		{
+			"id": "failclosed",
+			"text": "If it breaks, every call returns a W P Error. It never falls back. The feature plugin's examples ran against AWS KMS, AWS Secrets Manager, HashiCorp Vault and OpenBao.",
+			"caption": "If it breaks, every call returns a WP_Error. It never falls back. The feature plugin's examples ran against AWS KMS, AWS Secrets Manager, HashiCorp Vault and OpenBao."
+		},
+		{
+			"id": "audit",
+			"text": "For an audit trail, hook W P secret changed: name, action, user, timestamp, fingerprints. Never a value.",
+			"caption": "For an audit trail, hook wp_secret_changed: name, action, user, timestamp, fingerprints. Never a value."
+		},
+		{
+			"id": "close",
+			"text": "Committed in revision 64337, shipping in WordPress 7.2. Admin screen planned for 7.3. W P CLI lives in the feature plugin. Docs at secrets A P I dot dev. Trac 66187. Go lock something up.",
+			"caption": "Committed in r64337, shipping in WordPress 7.2. Admin screen planned for 7.3. WP-CLI lives in the feature plugin. Docs at secretsapi.dev. Trac #66187. Go lock something up."
+		}
+	]
+}

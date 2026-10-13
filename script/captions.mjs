@@ -14,8 +14,9 @@ const stamp = s => {
 
 if ( import.meta.url === `file://${ process.argv[ 1 ] }` ) {
 	const root = join( dirname( fileURLToPath( import.meta.url ) ), '..' );
-	const { scenes } = JSON.parse( readFileSync( join( root, 'script', 'narration.json' ), 'utf8' ) );
-	const manifest = JSON.parse( readFileSync( join( root, 'public', 'audio', 'manifest.json' ), 'utf8' ) );
+	const [ cut, outFile ] = process.argv.slice( 2 );
+	const { scenes } = JSON.parse( readFileSync( join( root, 'script', `narration.${ cut }.json` ), 'utf8' ) );
+	const manifest = JSON.parse( readFileSync( join( root, 'public', 'audio', cut, 'manifest.json' ), 'utf8' ) );
 	let offset = 0;
 	let n = 1;
 	let out = '';
@@ -28,6 +29,6 @@ if ( import.meta.url === `file://${ process.argv[ 1 ] }` ) {
 		}
 		offset += sceneSeconds( m.seconds );
 	}
-	writeFileSync( join( root, 'out', 'secrets-api.srt' ), out );
-	console.log( `Wrote out/secrets-api.srt (${ n - 1 } cues)` );
+	writeFileSync( join( root, outFile ), out );
+	console.log( `Wrote ${ outFile } (${ n - 1 } cues)` );
 }

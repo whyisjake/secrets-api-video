@@ -234,10 +234,10 @@ export const Hosts: React.FC< P > = ( { seconds } ) => {
 
 export const Close: React.FC< P > = ( { seconds } ) => {
 	const at = mk( seconds );
-	const item = ( label: string, text: string, mono = false ) => (
+	const item = ( label: string, text: string ) => (
 		<div style={ { borderTop: '3px solid #fff', paddingTop: 20 } }>
 			<div style={ { fontSize: 22, letterSpacing: '0.1em', textTransform: 'uppercase', opacity: 0.8 } }>{ label }</div>
-			<div style={ { fontSize: 36, marginTop: 10, fontFamily: mono ? font.mono : font.sans } }>{ text }</div>
+			<div style={ { fontSize: 36, marginTop: 10 } }>{ text }</div>
 		</div>
 	);
 	return (
@@ -246,16 +246,22 @@ export const Close: React.FC< P > = ( { seconds } ) => {
 				<Reveal delay={ 100 }>
 					<Logo tone="dark" height={ 64 } />
 				</Reveal>
-				<Reveal delay={ 300 } style={ { marginTop: 56 } }>
+				<Reveal delay={ 300 } style={ { marginTop: 50 } }>
 					<Headline size={ 124 }>Coming in WordPress 7.2</Headline>
 				</Reveal>
-				<Reveal delay={ at( 0.2 ) } style={ { marginTop: 28 } }>
+				<Reveal delay={ 450 } style={ { marginTop: 24 } }>
 					<div style={ { fontSize: 40, fontWeight: 600 } }>A step toward a more secure WordPress.</div>
 				</Reveal>
-				<div style={ { display: 'flex', gap: 60, marginTop: 70 } }>
-					<Reveal delay={ at( 0.45 ) } style={ { flex: 1 } }>{ item( 'Next', 'Connectors keys move onto it.' ) }</Reveal>
-					<Reveal delay={ at( 0.6 ) } style={ { flex: 1 } }>{ item( 'Later', 'An admin screen, planned for 7.3.' ) }</Reveal>
-					<Reveal delay={ at( 0.75 ) } style={ { flex: 1 } }>{ item( 'Learn more', 'secretsapi.dev', true ) }</Reveal>
+				{ /* On screen for the whole scene, from the first moments, so "secretsapi.dev" is readable throughout. */ }
+				<Reveal delay={ 600 } style={ { marginTop: 48 } }>
+					<div style={ { display: 'inline-flex', alignItems: 'center', gap: 22, background: color.white, color: color.blueberry, borderRadius: 18, padding: '18px 40px' } }>
+						<span style={ { fontSize: 26, fontWeight: 600, color: color.grey700 } }>Learn more</span>
+						<span style={ { fontSize: 60, fontWeight: 700, fontFamily: font.mono } }>secretsapi.dev</span>
+					</div>
+				</Reveal>
+				<div style={ { display: 'flex', gap: 60, marginTop: 56 } }>
+					<Reveal delay={ at( 0.3 ) } style={ { flex: 1 } }>{ item( 'Next', 'Connectors, where you add AI keys, moves onto it next.' ) }</Reveal>
+					<Reveal delay={ at( 0.5 ) } style={ { flex: 1 } }>{ item( 'Later', 'An admin screen, planned for 7.3.' ) }</Reveal>
 				</div>
 			</AbsoluteFill>
 		</Scene>
